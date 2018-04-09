@@ -9,14 +9,15 @@ import (
 
 func main() {
 	http.HandleFunc("/api/k8s/", func(w http.ResponseWriter, r *http.Request) {
-		cmd := exec.Command("C:\\ExtraApps\\kubectl.exe", "get", "pods", "-o", "json")
-		test := "test abc"
-		_ = test
-		stdout, err := cmd.Output()
+		cmd := exec.Command("C:\\Apps\\kubectl.exe", "get", "pods", "-o", "json")
+
+		stdout, err := cmd.CombinedOutput()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Fprintf(w, "Hello Hieu, %q", stdout)
+		test := string(stdout)
+		_ = test
+		fmt.Fprintf(w, "%q", stdout)
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
